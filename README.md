@@ -26,70 +26,9 @@ The skill requires a working Orca installation, a registered Git repository, an 
 
 ## Workflow
 
-### Five tasks, five read-only monitors
+![Five autonomous Poteto tasks with separate read-only monitors and question-only coordinator replies](docs/assets/workflow.png)
 
-Each Poteto session owns one independent task in its own worktree. Each monitor is a separate subagent; dotted arrows represent read-only observation.
-
-```mermaid
-flowchart TB
-    C("🧭 Main agent<br/>Define goals, scope & authorization")
-
-    P1("🥔 Poteto 1")
-    P2("🥔 Poteto 2")
-    P3("🥔 Poteto 3")
-    P4("🥔 Poteto 4")
-    P5("🥔 Poteto 5")
-
-    M1("👀 Monitor 1")
-    M2("👀 Monitor 2")
-    M3("👀 Monitor 3")
-    M4("👀 Monitor 4")
-    M5("👀 Monitor 5")
-
-    R("📬 Main agent receives<br/>Progress · Questions · Results")
-
-    C --> P1 & P2 & P3 & P4 & P5
-    P1 -.-> M1
-    P2 -.-> M2
-    P3 -.-> M3
-    P4 -.-> M4
-    P5 -.-> M5
-    M1 & M2 & M3 & M4 & M5 --> R
-
-    classDef coordinator fill:#FFF0D9,stroke:#E7A34C,color:#513719,stroke-width:2px
-    classDef executor fill:#FFF6CB,stroke:#D6B747,color:#51451E,stroke-width:2px
-    classDef monitor fill:#E4F3FF,stroke:#79B5DF,color:#22465F,stroke-width:2px
-    class C coordinator
-    class P1,P2,P3,P4,P5 executor
-    class M1,M2,M3,M4,M5,R monitor
-```
-
-### The feedback loop
-
-Only an explicit question from Poteto triggers a reply. The answer goes back to the same session; execution remains autonomous.
-
-```mermaid
-flowchart TB
-    E("📬 Update from a monitor") --> Q{"💬 Poteto explicitly<br/>asks for an answer?"}
-    Q -->|Yes| A("🧭 Main agent answers only that question<br/>Ask the user if a decision is required")
-    A --> P("🥔 Same Poteto session<br/>continues autonomously")
-    P --> W("👀 Continue read-only monitoring")
-
-    Q -->|No| D{"📦 Final result returned?"}
-    D -->|No| W
-    D -->|Yes| H("🌿 Receive & summarize<br/>Results, failures & limitations")
-
-    classDef monitor fill:#E4F3FF,stroke:#79B5DF,color:#22465F,stroke-width:2px
-    classDef decision fill:#EFE7FF,stroke:#B19AD9,color:#463465,stroke-width:2px
-    classDef coordinator fill:#FFF0D9,stroke:#E7A34C,color:#513719,stroke-width:2px
-    classDef executor fill:#FFF6CB,stroke:#D6B747,color:#51451E,stroke-width:2px
-    classDef result fill:#E6F5E8,stroke:#87BA8D,color:#2C5132,stroke-width:2px
-    class E,W monitor
-    class Q,D decision
-    class A coordinator
-    class P executor
-    class H result
-```
+Each Poteto session owns one independent task in its own worktree. Each monitor is a separate read-only subagent. The main agent replies only to explicit questions, asks the user when a decision is required, and summarizes returned results without an additional acceptance pass.
 
 **Slow progress, silence, red CI, and missing steps are reported, not used to steer execution.** No nudging, extra acceptance loop, or automatic rework.
 
