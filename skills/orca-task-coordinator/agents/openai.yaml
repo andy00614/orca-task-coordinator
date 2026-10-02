@@ -1,0 +1,13 @@
+interface:
+  display_name: "Orca Task Coordinator"
+  short_description: "Delegate to Poteto, monitor read-only, answer questions"
+  default_prompt: "Use $orca-task-coordinator to delegate these tasks to autonomous Poteto sessions, monitor read-only, and summarize their results."
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
