@@ -14,14 +14,74 @@ The skill requires a working Orca installation, a registered Git repository, an 
 
 ## Workflow
 
-1. Prepare complete task briefs and establish shared-file ownership.
-2. Launch independent ordinary worktrees/sessions concurrently.
-3. Confirm actual assistant activity, not just accepted input.
-4. Monitor read-only; forward explicit questions to the main agent.
-5. Answer the question within existing authorization, then return to monitoring.
-6. Receive results and report scope, evidence, failures, and limitations honestly.
+### Five tasks, five read-only monitors
 
-When monitor capacity is limited, queue monitors or let the main agent temporarily observe read-only. Execution sessions can still run independently. Silence, slow progress, red CI, and missing steps are reportable facts, not automatic steering triggers.
+Each Poteto session owns one independent task in its own worktree. Each monitor is a separate subagent; dotted arrows represent read-only observation.
+
+```mermaid
+flowchart TB
+    C("🧭 Main agent<br/>Define goals, scope & authorization")
+
+    P1("🥔 Poteto 1")
+    P2("🥔 Poteto 2")
+    P3("🥔 Poteto 3")
+    P4("🥔 Poteto 4")
+    P5("🥔 Poteto 5")
+
+    M1("👀 Monitor 1")
+    M2("👀 Monitor 2")
+    M3("👀 Monitor 3")
+    M4("👀 Monitor 4")
+    M5("👀 Monitor 5")
+
+    R("📬 Main agent receives<br/>Progress · Questions · Results")
+
+    C --> P1 & P2 & P3 & P4 & P5
+    P1 -.-> M1
+    P2 -.-> M2
+    P3 -.-> M3
+    P4 -.-> M4
+    P5 -.-> M5
+    M1 & M2 & M3 & M4 & M5 --> R
+
+    classDef coordinator fill:#FFF0D9,stroke:#E7A34C,color:#513719,stroke-width:2px
+    classDef executor fill:#FFF6CB,stroke:#D6B747,color:#51451E,stroke-width:2px
+    classDef monitor fill:#E4F3FF,stroke:#79B5DF,color:#22465F,stroke-width:2px
+    class C coordinator
+    class P1,P2,P3,P4,P5 executor
+    class M1,M2,M3,M4,M5,R monitor
+```
+
+### The feedback loop
+
+Only an explicit question from Poteto triggers a reply. The answer goes back to the same session; execution remains autonomous.
+
+```mermaid
+flowchart TB
+    E("📬 Update from a monitor") --> Q{"💬 Poteto explicitly<br/>asks for an answer?"}
+    Q -->|Yes| A("🧭 Main agent answers only that question<br/>Ask the user if a decision is required")
+    A --> P("🥔 Same Poteto session<br/>continues autonomously")
+    P --> W("👀 Continue read-only monitoring")
+
+    Q -->|No| D{"📦 Final result returned?"}
+    D -->|No| W
+    D -->|Yes| H("🌿 Receive & summarize<br/>Results, failures & limitations")
+
+    classDef monitor fill:#E4F3FF,stroke:#79B5DF,color:#22465F,stroke-width:2px
+    classDef decision fill:#EFE7FF,stroke:#B19AD9,color:#463465,stroke-width:2px
+    classDef coordinator fill:#FFF0D9,stroke:#E7A34C,color:#513719,stroke-width:2px
+    classDef executor fill:#FFF6CB,stroke:#D6B747,color:#51451E,stroke-width:2px
+    classDef result fill:#E6F5E8,stroke:#87BA8D,color:#2C5132,stroke-width:2px
+    class E,W monitor
+    class Q,D decision
+    class A coordinator
+    class P executor
+    class H result
+```
+
+**Slow progress, silence, red CI, and missing steps are reported, not used to steer execution.** No nudging, extra acceptance loop, or automatic rework.
+
+When monitor capacity is limited, queue monitors or let the main agent temporarily observe read-only. Execution sessions can still run independently. Existing authorization, project rules, and release protections remain in force.
 
 ## Launcher and validation
 
