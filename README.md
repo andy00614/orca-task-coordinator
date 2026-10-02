@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-Delegate independent tasks to autonomous Poteto sessions in ordinary Orca worktrees.
+Delegate independent tasks to autonomous Poteto sessions in ordinary Orca worktrees. Supports Codex and Claude Code.
 
 Before launch, the coordinator establishes goals, scope, authorization, dependencies, and resource ownership. After startup, Poteto owns execution. One read-only monitoring subagent observes each independent task. The coordinator answers only explicit questions from the executor and summarizes returned results without adding another review or acceptance loop.
 
@@ -16,15 +16,25 @@ Install with the [skills CLI](https://skills.sh/docs):
 npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator
 ```
 
-Select your agent and installation scope when prompted. For a global Codex installation:
+Select Codex or Claude Code and your project/global installation scope when prompted.
+
+For a global Codex installation:
 
 ```sh
 npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator --agent codex --global
 ```
 
-Alternatively, copy `skills/orca-task-coordinator` into your Codex skills directory (usually `~/.codex/skills/`). Keep the runtime scripts together. Start a new session and invoke `$orca-task-coordinator`.
+For a global Claude Code installation:
 
-The skill requires a working Orca installation, a registered Git repository, an installed executor, Python 3.9+, and a separately installed [`pstack:poteto-mode`](https://github.com/michael-denyer/pstack-claude#install). This repository does not bundle Poteto or Orca. If a dependency is missing, the agent reports it and provides installation guidance rather than installing automatically. Use the target project's own rules and installed tool documentation.
+```sh
+npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator --agent claude-code --global
+```
+
+Alternatively, copy `skills/orca-task-coordinator` into the corresponding skills directory: usually `~/.codex/skills/` for Codex or `~/.claude/skills/` for Claude Code. Keep the runtime scripts together. Start a new session and invoke `$orca-task-coordinator` in Codex or `/orca-task-coordinator` in Claude Code.
+
+The skill requires a working Orca installation, a registered Git repository, an installed Codex or Claude Code executor, Python 3.9+, and a separately installed [`pstack:poteto-mode`](https://github.com/michael-denyer/pstack-claude#install). This repository does not bundle Poteto or Orca. If a dependency is missing, the agent reports it and provides installation guidance rather than installing automatically. Use the target project's own rules and installed tool documentation.
+
+pstack supports both Codex and Claude Code; follow its [upstream installation instructions](https://github.com/michael-denyer/pstack-claude#install) for your agent. The Orca launcher uses `--agent codex` or `--agent claude`; the skills CLI uses `claude-code` as the Claude Code installation identifier.
 
 ## Workflow
 

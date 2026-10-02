@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-把独立任务交给 Poteto，在各自的 Orca worktree 和会话中自主执行。
+把独立任务交给 Poteto，在各自的 Orca worktree 和会话中自主执行。支持 Codex 和 Claude Code。
 
 启动前，主 agent 明确目标、范围、授权、依赖和资源归属。启动后，每个任务由 Poteto 自主执行，另配一个只读监控 subagent。主 agent 只回答执行者明确提出的问题，并汇总返回结果，不额外组织审查或验收。
 
@@ -16,15 +16,25 @@
 npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator
 ```
 
-按提示选择 agent 和安装范围。要为 Codex 全局安装：
+按提示选择 Codex 或 Claude Code，以及项目或全局安装范围。
+
+为 Codex 全局安装：
 
 ```sh
 npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator --agent codex --global
 ```
 
-也可以把 `skills/orca-task-coordinator` 复制到 Codex 的 skills 目录，通常是 `~/.codex/skills/`。保持运行脚本在同一目录。新开会话后使用 `$orca-task-coordinator`。
+为 Claude Code 全局安装：
 
-需要已安装并可用的 Orca、已注册的 Git 仓库、执行 agent、Python 3.9+，以及单独安装的 [`pstack:poteto-mode`](https://github.com/michael-denyer/pstack-claude#install)。本仓库不包含 Poteto 或 Orca。依赖缺失时，agent 会说明缺什么并提供安装指引，不自动安装。执行时遵循目标项目的实际规则和已安装工具的文档。
+```sh
+npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator --agent claude-code --global
+```
+
+也可以把 `skills/orca-task-coordinator` 复制到对应的 skills 目录：Codex 通常是 `~/.codex/skills/`，Claude Code 是 `~/.claude/skills/`。保持运行脚本在同一目录。新开会话后，Codex 使用 `$orca-task-coordinator`，Claude Code 使用 `/orca-task-coordinator`。
+
+需要已安装并可用的 Orca、已注册的 Git 仓库、Codex 或 Claude Code 执行 agent、Python 3.9+，以及单独安装的 [`pstack:poteto-mode`](https://github.com/michael-denyer/pstack-claude#install)。本仓库不包含 Poteto 或 Orca。依赖缺失时，agent 会说明缺什么并提供安装指引，不自动安装。执行时遵循目标项目的实际规则和已安装工具的文档。
+
+pstack 同时支持 Codex 和 Claude Code；请按[上游安装说明](https://github.com/michael-denyer/pstack-claude#install)选择对应的安装方式。Orca 启动器的参数是 `--agent codex` 或 `--agent claude`；skills CLI 安装时 Claude Code 的标识是 `claude-code`。
 
 ## 工作流程
 
