@@ -1,6 +1,8 @@
 # Orca Task Coordinator
 
-An English agent skill for delegating independent tasks to autonomous Poteto sessions in ordinary Orca worktrees.
+[English](README.md) | [简体中文](README.zh-CN.md)
+
+Delegate independent tasks to autonomous Poteto sessions in ordinary Orca worktrees.
 
 Before launch, the coordinator establishes goals, scope, authorization, dependencies, and resource ownership. After startup, Poteto owns execution. One read-only monitoring subagent observes each independent task. The coordinator answers only explicit questions from the executor and summarizes returned results without adding another review or acceptance loop.
 
