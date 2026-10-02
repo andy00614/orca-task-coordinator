@@ -8,9 +8,21 @@ Existing project rules, user stop/change instructions, permissions, CI requireme
 
 ## Install
 
-Copy `skills/orca-task-coordinator` into your Codex skills directory (usually `~/.codex/skills/`). Keep the runtime scripts together. Start a new session and invoke `$orca-task-coordinator`.
+Install with the [skills CLI](https://skills.sh/docs):
 
-The skill requires a working Orca installation, a registered Git repository, an installed executor, Python 3.9+, and a separately installed `pstack:poteto-mode`. This repository does not bundle Poteto or Orca. Use the target project's own rules and installed tool documentation.
+```sh
+npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator
+```
+
+Select your agent and installation scope when prompted. For a global Codex installation:
+
+```sh
+npx skills add andy00614/orca-task-coordinator --skill orca-task-coordinator --agent codex --global
+```
+
+Alternatively, copy `skills/orca-task-coordinator` into your Codex skills directory (usually `~/.codex/skills/`). Keep the runtime scripts together. Start a new session and invoke `$orca-task-coordinator`.
+
+The skill requires a working Orca installation, a registered Git repository, an installed executor, Python 3.9+, and a separately installed [`pstack:poteto-mode`](https://github.com/michael-denyer/pstack-claude#install). This repository does not bundle Poteto or Orca. If a dependency is missing, the agent reports it and provides installation guidance rather than installing automatically. Use the target project's own rules and installed tool documentation.
 
 ## Workflow
 
